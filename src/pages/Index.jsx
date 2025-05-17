@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import NavBar from "../components/NavBar";
 import HeroSection from "../components/HeroSection";
@@ -11,7 +10,7 @@ import Footer from "../components/Footer";
 
 const Index = () => {
   useEffect(() => {
-    // Initialize scroll reveal with fixed hover behavior
+    // Enhanced scroll reveal with permanent visibility
     const revealElements = () => {
       const elements = document.querySelectorAll('.reveal');
       
@@ -19,17 +18,24 @@ const Index = () => {
         const elementTop = element.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
         
+        // Add active class when element comes into view
         if (elementTop < windowHeight - 100) {
           element.classList.add('active');
+          // Once active, never remove the class
+          element.dataset.revealed = 'true';
         }
         
-        // Make sure hover doesn't hide the element by adding this class
+        // Prevent any disappearing behavior on hover transitions
         element.addEventListener('mouseenter', () => {
           element.classList.add('hover-visible');
         });
         
+        // Keep elements visible even after mouse leaves
         element.addEventListener('mouseleave', () => {
-          element.classList.remove('hover-visible');
+          // If it was previously revealed, keep it visible
+          if (element.dataset.revealed === 'true') {
+            element.classList.add('active');
+          }
         });
       });
     };
@@ -37,6 +43,9 @@ const Index = () => {
     window.addEventListener('scroll', revealElements);
     window.addEventListener('load', revealElements);
     revealElements(); // Run once on mount
+    
+    // Initial reveal for elements above the fold
+    setTimeout(revealElements, 100);
     
     return () => {
       window.removeEventListener('scroll', revealElements);

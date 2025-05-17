@@ -132,11 +132,12 @@
   color: transparent;
 }
 
-/* Modified Scroll reveal animations - Fixed hover issue */
+/* Completely revised scroll reveal animations - Fixed disappearing cards issue */
 .reveal {
-  opacity: 0;
+  opacity: 1; /* Start visible instead of hidden */
   transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: transform 0.8s ease;
+  will-change: transform; /* Optimize for animations */
 }
 
 .reveal.active {
@@ -144,13 +145,24 @@
   transform: translateY(0);
 }
 
-/* Fix for hover disappearing issue */
+/* Comprehensive fix for disappearing cards */
 .reveal:hover, 
+.reveal.hover-visible,
+.reveal.active, 
 .reveal.active:hover,
 .hover-lift:hover,
 [class*="animate-"]:hover {
-  opacity: 1; /* Ensure elements remain visible on hover */
+  opacity: 1 !important; /* Force visibility */
+  visibility: visible !important; /* Ensure visibility */
   pointer-events: auto; /* Ensure hover interactions work */
+}
+
+/* Prevent any transitions from affecting opacity */
+.reveal,
+.reveal.active,
+.hover-lift {
+  transition: transform 0.8s ease;
+  opacity: 1 !important;
 }
 
 /* Mouse follow effect */
