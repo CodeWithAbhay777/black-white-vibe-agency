@@ -11,7 +11,7 @@ import Footer from "../components/Footer";
 
 const Index = () => {
   useEffect(() => {
-    // Initialize scroll reveal
+    // Initialize scroll reveal with fixed hover behavior
     const revealElements = () => {
       const elements = document.querySelectorAll('.reveal');
       
@@ -22,6 +22,15 @@ const Index = () => {
         if (elementTop < windowHeight - 100) {
           element.classList.add('active');
         }
+        
+        // Make sure hover doesn't hide the element by adding this class
+        element.addEventListener('mouseenter', () => {
+          element.classList.add('hover-visible');
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          element.classList.remove('hover-visible');
+        });
       });
     };
     
